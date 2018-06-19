@@ -1,15 +1,20 @@
 <template>
   <div class="history-record">
     <div v-on:click="showHide" class="header-history">
-        <span 
-            
+        <span             
             :class="[
                 'lui-icon', 
+                'interations',
                 { 'lui-icon--triangle-bottom': expanded == true }, 
                 { 'lui-icon--triangle-right': expanded == false }]" 
             aria-hidden="true"
         ></span>        
         {{historyData.code}}
+        <span 
+            v-on:click="reloadHistory"
+            class='lui-icon lui-icon--reload'
+            aria-hidden="true"
+        ></span>           
         <span 
             v-on:click="removeHistory"
             class='lui-icon lui-icon--remove remove-history'
@@ -17,16 +22,19 @@
         ></span>        
     </div>
     <div v-if="expanded">
-        {{historyData.code}}
+        Result: {{historyData.result}}
+    </div>      
+    <div v-if="expanded">
+        Code: {{historyData.code}}
     </div>    
     <div v-if="expanded">
-        {{historyData.id}}
-    </div>
-    <div v-if="expanded">
-        {{historyData.codeEvaluated}}
+        Evaluated code: {{historyData.codeEvaluated}}
     </div>    
     <div v-if="expanded">
-        {{historyData.timeStamp}}
+        ID: {{historyData.id}}
+    </div>    
+    <div v-if="expanded">
+        Timestamp: {{historyData.timeStamp}}
     </div>
   </div>    
 </template>
@@ -48,6 +56,9 @@ export default {
     removeHistory: function() {
       let _this = this;
       _this.$emit("removeHistory", _this.historyData);
+    },
+    reloadHistory: function() {
+        console.log('https://youtu.be/T8oTlWwAPFI?t=65')
     }
   },
   mounted: function() {
@@ -63,15 +74,28 @@ export default {
   grid-template-columns: auto;
   /* grid-template-rows: 50px 50px 50px 50px; */
   grid-gap: 1px;
-  border-style: solid;
-  border-width: 1px;
-}
-
-.remove-history {
-  float: right;
+  /* border-style: solid;
+  border-width: 1px; */
 }
 
 .header-history {
-    cursor: pointer;
+  display: grid;
+  grid-template-columns: 20px auto 20px 20px;
+  /* grid-template-rows: 50px 50px 50px 50px; */
+  grid-gap: 1px;
+  /* border-style: solid;
+  border-width: 1px; */
+}
+
+.remove-history {
+  /* float: right; */
+}
+
+.header-history {
+  cursor: pointer;
+}
+
+.interations {
+  font-size: 20px;
 }
 </style>

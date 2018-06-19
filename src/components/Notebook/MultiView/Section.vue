@@ -22,6 +22,7 @@
       v-model="activeCode" 
       :options="cmOption"         
       @ready="onEditorReady"
+      @input="onEditorChange"
       class="editor">
     </codemirror>
 
@@ -131,12 +132,13 @@ export default {
       _this.$emit("removeSection", _this.notebookData);
     },
     removeHistory: function(historyRec) {
-      let _this = this
+      let _this = this;
 
-      _this.notebookData.history = _this.notebookData.history.filter(function(h) {
-        return h.id != historyRec.id
-      })
-
+      _this.notebookData.history = _this.notebookData.history.filter(function(
+        h
+      ) {
+        return h.id != historyRec.id;
+      });
     },
     test: function() {
       this.$notify({
@@ -162,6 +164,22 @@ export default {
         }
       };
       editor.addKeyMap(map);
+    },
+    onEditorChange: function(code) {
+      let _this = this;
+
+      for (let i = 0; i < _this.notebookData.data.length; i++) {
+        if (_this.notebookData.data[i].id == _this.activeId) {
+          _this.notebookData.data[i].code = code;
+
+          if (code.indexOf("\n") > -1) {
+            if (code.indexOf("//**") > -1) {
+              let title = code.substring(0, code.indexOf("\n")).replace('//**', '')
+              _this.notebookData.data[i].title = title
+            }
+          }
+        }
+      }
     }
   },
   mounted: function() {

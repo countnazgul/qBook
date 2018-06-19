@@ -36,19 +36,22 @@ export default {
               id: 123,
               code: 'sum( $(test) )',
               codeEvaluated: 'sum( 123 )',
-              timeStamp: '2018-06-19 13:10:11'
+              timeStamp: '2018-06-19 13:10:11',
+              result: '123'
             },
             {
               id: 456,
               code: 'sum( $(test1) )',
               codeEvaluated: 'sum( 456 )',
-              timeStamp: '2018-06-19 14:10:11'
+              timeStamp: '2018-06-19 14:10:11',
+              result: '456'
             },
             {
               id: 789,
               code: 'sum( $(test2) )',
               codeEvaluated: 'sum( 789 )',
-              timeStamp: '2018-06-19 15:10:11'
+              timeStamp: '2018-06-19 15:10:11',
+              result: '789'
             }                        
           ],
           data: [
