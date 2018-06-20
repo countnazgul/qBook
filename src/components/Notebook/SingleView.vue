@@ -16,7 +16,7 @@
 <script>
 import { codemirror } from "vue-codemirror";
 import "codemirror/lib/codemirror.css";
-import { uuid } from 'vue-uuid'
+import { uuid } from "vue-uuid";
 
 export default {
   name: "SingleView",
@@ -28,7 +28,7 @@ export default {
     return {
       appId: "",
       code: "1231 asd",
-      result: {code: '', evaluated: '', value: ''},
+      result: { code: "", evaluated: "", value: "" },
       history: [],
       cmOption: {
         tabSize: 4,
@@ -69,18 +69,32 @@ export default {
       editor.addKeyMap(map);
     },
     calculateExpression: function() {
-        let _this = this
-        let result = {
-            code: _this.code,
-            evaluated: _this.code,
-            value: new Date()
-        }
+      let _this = this;
+      let result = {
+        code: _this.code,
+        evaluated: _this.code,
+        value: new Date()
+      };
 
-        _this.result = result
-        _this.history.unshift(result)
+      _this.result = result;
+      _this.history.unshift(result);
     }
   },
-  mounted: function() {}
+  mounted: function() {
+    let _this = this;
+    console.log(_this.$store);
+    _this.appId = _this.$route.params.id;
+
+    if (!_this.$store.state[_this.appId]) {
+      let appObject = {
+        id: _this.appId,
+        single: {
+          code: "",
+          history: []
+        }
+      };
+    }
+  }
 };
 </script>
 
