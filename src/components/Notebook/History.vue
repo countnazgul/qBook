@@ -57,18 +57,8 @@ export default {
       let _this = this;
 
       _this.$store
-        .dispatch("removeHistory", {
-          appId: _this.appId,
-          data: _this.historyData,
-          type: _this.type
-        })
-        .then(function(n) {
-        //   _this.code = n.single.code;
-        //   _this.history = n.single.history;
-        });
-
-      //   console.log(_this.historyData)
-      //   _this.$emit("removeHistory", _this.historyData);
+        .dispatch("removeHistory", _this.historyData.id)
+        .then(function(n) {});
     },
     reloadHistory: function() {
       console.log("https://youtu.be/T8oTlWwAPFI?t=65");

@@ -21,7 +21,7 @@
     </ul>
 
     <div v-if="view==='single'">
-        <single-view :singleData="notebook.single" :appId="notebook.appId"></single-view>
+        <single-view :singleData="singleData" :appId="appId"></single-view>
     </div>
 
     <div v-if="view==='multi'">
@@ -45,7 +45,8 @@ export default {
     return {
       appId: "",
       view: "single",
-      notebook: {}
+      notebook: {},
+      singleData: {}
     };
   },
   methods: {
@@ -66,9 +67,8 @@ export default {
     let _this = this;
     _this.appId = _this.$route.params.id;
 
-    _this.$store.dispatch("getNotebook", _this.appId).then(function(n) {
-      // console.log(n)
-      _this.notebook = n
+    _this.$store.dispatch("getSingleHistory", _this.appId).then(function(sh) {
+      _this.singleData = sh
     });
 
     // if (_this.$route.params.section) {

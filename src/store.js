@@ -25,7 +25,23 @@ export default new Vuex.Store({
         }
       }
     ],
-    history: []
+    historySingle: [],
+    historyMulti: [],
+    sections: []
+
+    // historySingle: [
+    //   {
+    //     id: '123',
+    //     appId: '123',
+    //     code: '',
+    //     codeEvaluated: '',
+    //     result: '',
+    //     timeStamp: ''        
+    //   }
+    // ]
+
+
+
   },
   mutations: {
     SET_DOCUMENTS: function (state, documents) {
@@ -35,12 +51,11 @@ export default new Vuex.Store({
       state.notebooks.push(notebook)
     },
     SET_SINGLE_HISTORY: function (state, data) {
-      state.notebooks.map(function (h) {
-        if (h.appId == data.appId) {
-          h.single.history = data.history
-        }
-      })
+      state.historySingle.push(data)
     },
+    REMOVE_SINGLE_HISTORY: function (state, data) {
+      // state.historySingle.push(data)
+    },    
     REMOVE_HISTORY: function (state, { appId, data, type }) {
       // console.log(appId, data, type)
 
@@ -54,7 +69,7 @@ export default new Vuex.Store({
         }
       })
 
-      
+
     }
   },
   actions: {
@@ -118,8 +133,22 @@ export default new Vuex.Store({
     setSingleHistory: function ({ commit }, data) {
       commit('SET_SINGLE_HISTORY', data)
     },
+    removeSingleHistory: function ({ commit }, data) {
+      commit('REMOVE_SINGLE_HISTORY', data)
+    },    
     removeHistory: function ({ commit }, data) {
       commit('REMOVE_HISTORY', data)
+    },
+    getSingleHistory: function ({ commit }, appId) {
+      let _this = this
+      return new Promise(function (resolve, reject) {
+
+        let singleHistoryData = _this.state.historySingle.filter(function (h) {
+          return h.appId == appId
+        })
+
+        resolve(singleHistoryData)
+      })
     }
   }
 })

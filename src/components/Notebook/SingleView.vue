@@ -13,7 +13,7 @@
       </div> -->
       <div class="history">
         <history 
-          v-for="historyData in history"
+          v-for="historyData in singleData"
           :key="historyData.id"
           :historyData="historyData" 
           :appId="appId" 
@@ -90,22 +90,16 @@ export default {
       let _this = this;
       let result = {
         id: _this.$uuid.v4(),
+        appId: _this.appId,
         code: _this.code,
         codeEvaluated: _this.code,
         result: _this.$uuid.v4(),
         timeStamp: new Date()
-      }; 
+      };
 
       _this.result = result;
-      _this.history.unshift(result);
-
-      // console.log(_this.singleData.history)
-      _this.$store
-        .dispatch("setSingleHistory", {
-          appId: _this.appId,
-          history: _this.singleData.history
-        })
-        .then(function(n) {});
+      _this.singleData.unshift(result);
+      _this.$store.dispatch("setSingleHistory", result).then(function(n) {});
     }
   },
   watch: {
@@ -119,11 +113,11 @@ export default {
   },
   mounted: function() {
     let _this = this;
-    let appId = _this.$route.params.id;
-    _this.$store.dispatch("getNotebook", appId).then(function(n) {
-      _this.code = n.single.code;
-      _this.history = n.single.history;
-    });
+    // _this.appId = _this.$route.params.id;
+    // _this.$store.dispatch("getNotebook", appId).then(function(n) {
+    //   _this.code = n.single.code;
+    //   _this.history = n.single.history;
+    // });
   }
 };
 </script>
