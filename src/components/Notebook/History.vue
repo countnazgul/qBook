@@ -1,6 +1,6 @@
 <template>
   <div class="history-record">
-    <div v-on:click="showHide" class="header-history">
+    <div v-on:click.stop="showHide" class="header-history">
         <span             
             :class="[
                 'lui-icon', 
@@ -11,12 +11,12 @@
         ></span>        
         {{historyData.code}}
         <span 
-            v-on:click="reloadHistory"
+            v-on:click.stop="reloadHistory"
             class='lui-icon lui-icon--reload'
             aria-hidden="true"
         ></span>           
         <span 
-            v-on:click="removeHistory"
+            v-on:click.stop="removeHistory"
             class='lui-icon lui-icon--remove remove-history'
             aria-hidden="true"
         ></span>        
@@ -42,7 +42,7 @@
 <script>
 export default {
   name: "History",
-  props: ["historyData"],
+  props: ["historyData", "appId", "type"],
   data() {
     return {
       expanded: false
@@ -55,10 +55,23 @@ export default {
     },
     removeHistory: function() {
       let _this = this;
-      _this.$emit("removeHistory", _this.historyData);
+
+      _this.$store
+        .dispatch("removeHistory", {
+          appId: _this.appId,
+          data: _this.historyData,
+          type: _this.type
+        })
+        .then(function(n) {
+        //   _this.code = n.single.code;
+        //   _this.history = n.single.history;
+        });
+
+      //   console.log(_this.historyData)
+      //   _this.$emit("removeHistory", _this.historyData);
     },
     reloadHistory: function() {
-        console.log('https://youtu.be/T8oTlWwAPFI?t=65')
+      console.log("https://youtu.be/T8oTlWwAPFI?t=65");
     }
   },
   mounted: function() {

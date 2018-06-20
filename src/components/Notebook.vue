@@ -21,7 +21,7 @@
     </ul>
 
     <div v-if="view==='single'">
-        <single-view></single-view>
+        <single-view :singleData="notebook.single" :appId="notebook.appId"></single-view>
     </div>
 
     <div v-if="view==='multi'">
@@ -35,7 +35,7 @@ import SingleView from "./Notebook/SingleView.vue";
 import MultiView from "./Notebook/MultiView/MultiView.vue";
 
 export default {
-  name: "Select",
+  name: "Notebook",
   components: {
     SingleView,
     MultiView
@@ -44,7 +44,8 @@ export default {
   data() {
     return {
       appId: "",
-      view: "single"
+      view: "single",
+      notebook: {}
     };
   },
   methods: {
@@ -63,7 +64,12 @@ export default {
   },
   mounted: function() {
     let _this = this;
-    _this.appId = this.$route.params.id;
+    _this.appId = _this.$route.params.id;
+
+    _this.$store.dispatch("getNotebook", _this.appId).then(function(n) {
+      // console.log(n)
+      _this.notebook = n
+    });
 
     // if (_this.$route.params.section) {
     //   _this.view = _this.$route.params.section;

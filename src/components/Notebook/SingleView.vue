@@ -1,34 +1,49 @@
 <template>
-  <div class="single">
+  <div class="single" v-if="singleData">
       <codemirror 
         v-model="code" 
         :options="cmOption" 
         @ready="onEditorReady"
+        @input="onEditorChange"
         class="editor">
       </codemirror>
-      <div class="result">{{result.value}}</div>
-      <div class="history">History
-          <div v-for="hResult in history" :key="hResult.code">{{hResult.value}}</div>
+      <!-- <div class="result">{{result.value}}</div> -->
+      <!-- <div class="history">
+        <div v-for="h in history" :key="h.id">{{h.id}}</div>      
+      </div> -->
+      <div class="history">
+        <history 
+          v-for="historyData in history"
+          :key="historyData.id"
+          :historyData="historyData" 
+          :appId="appId" 
+          :type="'single'" 
+          class=""        
+        ></history>
       </div>
+
   </div>
 </template>
 
 <script>
+//<!-- @removeHistory="removeHistory" -->
 import { codemirror } from "vue-codemirror";
 import "codemirror/lib/codemirror.css";
 import { uuid } from "vue-uuid";
+import History from "./History.vue";
 
 export default {
   name: "SingleView",
-  props: {},
+  props: ["singleData", "appId"],
   components: {
-    codemirror
+    codemirror,
+    History
   },
   data() {
     return {
-      appId: "",
-      code: "1231 asd",
-      result: { code: "", evaluated: "", value: "" },
+      // appId: "",
+      code: "",
+      // result: { code: "", evaluated: "", value: "" },
       history: [],
       cmOption: {
         tabSize: 4,
@@ -68,32 +83,47 @@ export default {
       };
       editor.addKeyMap(map);
     },
+    onEditorChange: function(code) {
+      let _this = this;
+    },
     calculateExpression: function() {
       let _this = this;
       let result = {
+        id: _this.$uuid.v4(),
         code: _this.code,
-        evaluated: _this.code,
-        value: new Date()
-      };
+        codeEvaluated: _this.code,
+        result: _this.$uuid.v4(),
+        timeStamp: new Date()
+      }; 
 
       _this.result = result;
       _this.history.unshift(result);
+
+      // console.log(_this.singleData.history)
+      _this.$store
+        .dispatch("setSingleHistory", {
+          appId: _this.appId,
+          history: _this.singleData.history
+        })
+        .then(function(n) {});
+    }
+  },
+  watch: {
+    code() {
+      let _this = this;
+      _this.singleData.code = _this.code;
+    },
+    singleData() {
+      let _this = this;
     }
   },
   mounted: function() {
     let _this = this;
-    console.log(_this.$store);
-    _this.appId = _this.$route.params.id;
-
-    if (!_this.$store.state[_this.appId]) {
-      let appObject = {
-        id: _this.appId,
-        single: {
-          code: "",
-          history: []
-        }
-      };
-    }
+    let appId = _this.$route.params.id;
+    _this.$store.dispatch("getNotebook", appId).then(function(n) {
+      _this.code = n.single.code;
+      _this.history = n.single.history;
+    });
   }
 };
 </script>
