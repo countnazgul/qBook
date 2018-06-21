@@ -1,5 +1,9 @@
 <template>
-  <div class="single" v-if="singleData">
+  <div class="single" >
+    <!-- v-if="singleData" -->
+    <!-- <span v-on:click="test">{{doneTodosCount}}</span> -->
+    <!-- <button v-on:click="testtest">test123</button> 
+    <div v-for="t1 in test" :key="(t1.data+10)">{{t1.data}}</div>  -->
       <codemirror 
         v-model="code" 
         :options="cmOption" 
@@ -13,9 +17,10 @@
       </div> -->
       <div class="history">
         <history 
-          v-for="historyData in singleData"
+          v-for="historyData in history"
           :key="historyData.id"
           :historyData="historyData" 
+          v-on:removeSingleHistory="removeSingleHistory"
           :appId="appId" 
           :type="'single'" 
           class=""        
@@ -27,6 +32,7 @@
 
 <script>
 //<!-- @removeHistory="removeHistory" -->
+import { mapGetters } from "vuex";
 import { codemirror } from "vue-codemirror";
 import "codemirror/lib/codemirror.css";
 import { uuid } from "vue-uuid";
@@ -34,7 +40,7 @@ import History from "./History.vue";
 
 export default {
   name: "SingleView",
-  props: ["singleData", "appId"],
+  props: ["singleData", "appId", "test"],
   components: {
     codemirror,
     History
@@ -98,8 +104,20 @@ export default {
       };
 
       _this.result = result;
-      _this.singleData.unshift(result);
+      _this.history.unshift(result);
       _this.$store.dispatch("setSingleHistory", result).then(function(n) {});
+    },
+    removeSingleHistory: function(historyId) {
+      let _this = this;
+      // _this.history = _this.history.filter(function(a) {
+      //   return a.id != historyId
+      // });
+      _this.$store
+        .dispatch("removeSingleHistory", historyId)
+        .then(function(n) {});
+    },
+    test1: function() {
+      this.$store.dispatch("test").then(function(n) {});
     }
   },
   watch: {
@@ -109,16 +127,23 @@ export default {
     },
     singleData() {
       let _this = this;
+      _this.history = _this.singleData;
+    },
+    appId: function() {
+      // console.log(2)
+      this.code = "";
     }
   },
   mounted: function() {
     let _this = this;
+    _this.history = _this.singleData;
     // _this.appId = _this.$route.params.id;
     // _this.$store.dispatch("getNotebook", appId).then(function(n) {
     //   _this.code = n.single.code;
     //   _this.history = n.single.history;
     // });
-  }
+  },
+  computed: mapGetters(["doneTodosCount"])
 };
 </script>
 

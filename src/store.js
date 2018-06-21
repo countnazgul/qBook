@@ -27,20 +27,19 @@ export default new Vuex.Store({
     ],
     historySingle: [],
     historyMulti: [],
-    sections: []
-
-    // historySingle: [
-    //   {
-    //     id: '123',
-    //     appId: '123',
-    //     code: '',
-    //     codeEvaluated: '',
-    //     result: '',
-    //     timeStamp: ''        
-    //   }
-    // ]
-
-
+    sections: [],
+    test: 1,
+    blaaaa: [
+      {
+        appId: "10",
+        sectionId: '1234567890',
+        code: "123",
+        codeEvaluated: "123",
+        id: "f11d3b2e-8345-4261-a012-e17540c03db9",
+        result: "78720cd6-2cdd-4b85-b7eb-dea78c71d867",
+        timeStamp: "Thu Jun 21 2018 16:54:14 GMT+0100 (GMT Daylight Time)",
+      }
+    ]
 
   },
   mutations: {
@@ -72,6 +71,9 @@ export default new Vuex.Store({
       })
 
 
+    },
+    TEST: function (state) {
+      state.historySingle[0].data = state.historySingle[0].data + 10
     }
   },
   actions: {
@@ -151,6 +153,32 @@ export default new Vuex.Store({
 
         resolve(singleHistoryData)
       })
+    },
+    test: function ({ commit }) {
+      return new Promise(function (resolve, reject) {
+        commit('TEST')
+      })
+    }
+  },
+  getters: {
+    doneTodosCount: (state, getters) => {
+      return state.test
+    },
+    singleHistory2(state) {
+      return (appId) => {
+        return bar;
+      }
+    },
+    singleHistory: (state, getters) => {
+      return state.historySingle
+    },
+    getMovieById: (state, getters) => (id) => {
+      // return state.movies.find(movie => movie.id === id)
+      let singleHistoryData = state.historySingle.filter(function (h) {
+        return h.appId == appId
+      })
+
+      return singleHistoryData
     }
   }
 })
