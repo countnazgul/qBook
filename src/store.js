@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import R from 'vue-ramda'
+// import R from 'vue-ramda'
 
 Vue.use(Vuex)
 // Vue.use(VueRamda)
@@ -53,9 +53,11 @@ export default new Vuex.Store({
     SET_SINGLE_HISTORY: function (state, data) {
       state.historySingle.push(data)
     },
-    REMOVE_SINGLE_HISTORY: function (state, data) {
-      // state.historySingle.push(data)
-    },    
+    REMOVE_SINGLE_HISTORY: function (state, id) {
+      state.historySingle = state.historySingle.filter(function (s) {
+        return s.id != id
+      })
+    },
     REMOVE_HISTORY: function (state, { appId, data, type }) {
       // console.log(appId, data, type)
 
@@ -135,7 +137,7 @@ export default new Vuex.Store({
     },
     removeSingleHistory: function ({ commit }, data) {
       commit('REMOVE_SINGLE_HISTORY', data)
-    },    
+    },
     removeHistory: function ({ commit }, data) {
       commit('REMOVE_HISTORY', data)
     },

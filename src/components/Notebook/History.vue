@@ -56,9 +56,13 @@ export default {
     removeHistory: function() {
       let _this = this;
 
-      _this.$store
-        .dispatch("removeHistory", _this.historyData.id)
-        .then(function(n) {});
+      // _this.$store
+      //   .dispatch("removeSingleHistory", _this.historyData.id)
+      //   .then(function(n) {});
+
+      _this.historyData = _this.historyData.filter(function(s) {
+        return s.id != _this.historyData.id;
+      });
     },
     reloadHistory: function() {
       console.log("https://youtu.be/T8oTlWwAPFI?t=65");

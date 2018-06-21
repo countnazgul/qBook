@@ -5,14 +5,14 @@ import store from './store'
 import VueCodemirror from 'vue-codemirror'
 import UUID from 'vue-uuid'
 import Notifications from 'vue-notification'
-import VueRamda from 'vue-ramda'
+// import VueRamda from 'vue-ramda'
 
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/keymap/sublime';
 
 Vue.use(UUID)
 Vue.use(Notifications)
-Vue.use(VueRamda)
+// Vue.use(VueRamda)
 
 // you can set default global options and events when use
 Vue.use(VueCodemirror, /* { 
